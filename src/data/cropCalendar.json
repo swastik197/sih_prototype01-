@@ -1,0 +1,134 @@
+{
+  "rice": {
+    "nameHi": "धान",
+    "nameTa": "அரிசி",
+    "nameTe": "వరి",
+    "season": "kharif",
+    "sowingMonths": [6, 7],
+    "harvestMonths": [10, 11],
+    "idealRainfall": { "min": 100, "max": 200 },
+    "idealTemp": { "min": 20, "max": 35 },
+    "regions": ["UP", "Bihar", "MP", "Tamil Nadu", "Telangana", "Karnataka"]
+  },
+  "wheat": {
+    "nameHi": "गेहूं",
+    "nameTa": "கோதுமை",
+    "nameTe": "గోధుమ",
+    "season": "rabi",
+    "sowingMonths": [10, 11],
+    "harvestMonths": [3, 4],
+    "idealRainfall": { "min": 50, "max": 100 },
+    "idealTemp": { "min": 10, "max": 25 },
+    "regions": ["UP", "Punjab", "MP", "Bihar", "Rajasthan"]
+  },
+  "tomato": {
+    "nameHi": "टमाटर",
+    "nameTa": "தக்காளி",
+    "nameTe": "టమాటా",
+    "season": "zaid",
+    "sowingMonths": [1, 2, 6, 7],
+    "harvestMonths": [4, 5, 9, 10],
+    "idealRainfall": { "min": 60, "max": 150 },
+    "idealTemp": { "min": 20, "max": 27 },
+    "regions": ["Maharashtra", "Karnataka", "AP", "UP", "MP"]
+  },
+  "onion": {
+    "nameHi": "प्याज",
+    "nameTa": "வெங்காயம்",
+    "nameTe": "ఉల్లిపాయ",
+    "season": "rabi",
+    "sowingMonths": [10, 11],
+    "harvestMonths": [3, 4],
+    "idealRainfall": { "min": 50, "max": 75 },
+    "idealTemp": { "min": 13, "max": 24 },
+    "regions": ["Maharashtra", "Karnataka", "MP", "Gujarat"]
+  },
+  "potato": {
+    "nameHi": "आलू",
+    "nameTa": "உருளைக்கிழங்கு",
+    "nameTe": "బంగాళదుంప",
+    "season": "rabi",
+    "sowingMonths": [10, 11],
+    "harvestMonths": [2, 3],
+    "idealRainfall": { "min": 50, "max": 75 },
+    "idealTemp": { "min": 15, "max": 20 },
+    "regions": ["UP", "West Bengal", "Bihar", "Gujarat"]
+  },
+  "cotton": {
+    "nameHi": "कपास",
+    "nameTa": "பருத்தி",
+    "nameTe": "పత్తి",
+    "season": "kharif",
+    "sowingMonths": [4, 5],
+    "harvestMonths": [10, 11],
+    "idealRainfall": { "min": 50, "max": 100 },
+    "idealTemp": { "min": 21, "max": 30 },
+    "regions": ["Maharashtra", "Gujarat", "Telangana", "Haryana"]
+  },
+  "maize": {
+    "nameHi": "मक्का",
+    "nameTa": "சோளம்",
+    "nameTe": "మొక్కజొన్న",
+    "season": "kharif",
+    "sowingMonths": [6, 7],
+    "harvestMonths": [9, 10],
+    "idealRainfall": { "min": 50, "max": 100 },
+    "idealTemp": { "min": 21, "max": 27 },
+    "regions": ["Karnataka", "MP", "Bihar", "Tamil Nadu", "Telangana"]
+  },
+  "mustard": {
+    "nameHi": "सरसों",
+    "nameTa": "கடுகு",
+    "nameTe": "ఆవాలు",
+    "season": "rabi",
+    "sowingMonths": [10, 11],
+    "harvestMonths": [3, 4],
+    "idealRainfall": { "min": 25, "max": 40 },
+    "idealTemp": { "min": 10, "max": 25 },
+    "regions": ["Rajasthan", "Haryana", "MP", "UP"]
+  },
+  "chickpea": {
+    "nameHi": "चना",
+    "nameTa": "கொண்டைக்கடலை",
+    "nameTe": "శెనగలు",
+    "season": "rabi",
+    "sowingMonths": [10, 11],
+    "harvestMonths": [3, 4],
+    "idealRainfall": { "min": 60, "max": 90 },
+    "idealTemp": { "min": 20, "max": 25 },
+    "regions": ["MP", "Maharashtra", "Rajasthan", "UP"]
+  },
+  "moong": {
+    "nameHi": "मूंग",
+    "nameTa": "பச்சைப்பயறு",
+    "nameTe": "పెసలు",
+    "season": "zaid",
+    "sowingMonths": [3, 4],
+    "harvestMonths": [5, 6],
+    "idealRainfall": { "min": 60, "max": 75 },
+    "idealTemp": { "min": 25, "max": 35 },
+    "regions": ["Rajasthan", "Maharashtra", "Karnataka", "AP"]
+  },
+  "sugarcane": {
+    "nameHi": "गन्ना",
+    "nameTa": "கரும்பு",
+    "nameTe": "చెరకు",
+    "season": "annual",
+    "sowingMonths": [2, 3],
+    "harvestMonths": [12, 1, 2],
+    "idealRainfall": { "min": 100, "max": 150 },
+    "idealTemp": { "min": 20, "max": 35 },
+    "regions": ["UP", "Maharashtra", "Karnataka", "Tamil Nadu"]
+  },
+  "soybean": {
+    "nameHi": "सोयाबीन",
+    "nameTa": "சோயாபீன்",
+    "nameTe": "సోయాబీన్",
+    "season": "kharif",
+    "sowingMonths": [6, 7],
+    "harvestMonths": [9, 10],
+    "idealRainfall": { "min": 60, "max": 65 },
+    "idealTemp": { "min": 25, "max": 30 },
+    "regions": ["MP", "Maharashtra", "Rajasthan", "Karnataka"]
+  }
+}
