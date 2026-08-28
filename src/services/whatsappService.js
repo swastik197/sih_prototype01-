@@ -21,14 +21,14 @@ function getCleanNumber(to) {
  * @param {string} mimeType The mime type of the media
  * @returns {Promise<string|null>} The media ID
  */
-async function uploadMedia(buffer, mimeType = 'audio/wav') {
+async function uploadMedia(buffer, mimeType = 'audio/mpeg') {
   if (!config.metaWhatsapp.accessToken || !config.metaWhatsapp.phoneNumberId) return null;
 
   try {
     const formData = new FormData();
     formData.append('messaging_product', 'whatsapp');
     // Using a generic filename so Meta processes it correctly
-    formData.append('file', buffer, { filename: 'audio.wav', contentType: mimeType });
+    formData.append('file', buffer, { filename: 'audio.mp3', contentType: mimeType });
 
     const url = `https://graph.facebook.com/v19.0/${config.metaWhatsapp.phoneNumberId}/media`;
     const response = await axios.post(url, formData, {
@@ -131,7 +131,7 @@ async function sendTextAndVoice(to, message, language = 'hi') {
   try {
     const audioBuffer = await ttsService.generateAudio(message, language);
     if (audioBuffer) {
-      const mediaId = await uploadMedia(audioBuffer, 'audio/wav');
+      const mediaId = await uploadMedia(audioBuffer, 'audio/mpeg');
       if (mediaId) {
         await sendAudio(to, mediaId);
       }

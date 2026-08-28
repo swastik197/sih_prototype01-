@@ -35,6 +35,7 @@ async function generateAudio(text, langCode = 'hi') {
         speaker: 'ritu', // 'ritu', 'aditya', 'shubh' etc.
         pace: 1.0,
         speech_sample_rate: 24000,
+        output_audio_codec: 'mp3',
         model: 'bulbul:v3'
       },
       {
