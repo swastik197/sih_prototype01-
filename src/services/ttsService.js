@@ -32,7 +32,7 @@ async function generateAudio(text, langCode = 'hi') {
       {
         text: safeText,
         language_code: targetLang,
-        speaker: 'meera', // 'meera' or 'shubh'
+        speaker: 'ritu', // 'ritu', 'aditya', 'shubh' etc.
         pace: 1.0,
         speech_sample_rate: 24000,
         model: 'bulbul:v3'
@@ -56,7 +56,8 @@ async function generateAudio(text, langCode = 'hi') {
       return null;
     }
   } catch (error) {
-    logger.error(`Error generating TTS from Sarvam AI: ${error.response?.data?.message || error.message}`);
+    const errorDetails = error.response?.data ? JSON.stringify(error.response.data) : error.message;
+    logger.error(`Error generating TTS from Sarvam AI: HTTP ${error.response?.status} - ${errorDetails}`);
     return null;
   }
 }
