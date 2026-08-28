@@ -1,75 +1,85 @@
 const express = require('express');
 const router = express.Router();
 const messageController = require('../controllers/messageController');
-const twilioService = require('../services/twilioService');
+const whatsappService = require('../services/whatsappService');
+const config = require('../config/env');
 const logger = require('../utils/logger');
 
-// POST /whatsapp
-router.post('/whatsapp', async (req, res) => {
-    try {
-        const {
-            Body,
-            From,
-            To,
-            ProfileName,
-            WaId,
-            NumMedia,
-            Latitude,
-            Longitude
-        } = req.body;
+// GET /whatsapp - Webhook verification required by Meta
+router.get('/whatsapp', (req, res) => {
+    const mode = req.query['hub.mode'];
+    const token = req.query['hub.verify_token'];
+    const challenge = req.query['hub.challenge'];
 
-        const location = (Latitude && Longitude) ? { lat: Latitude, lon: Longitude } : null;
-
-        const responseMessage = await messageController.handleIncoming({
-            body: Body,
-            from: From,
-            profileName: ProfileName,
-            channel: 'whatsapp',
-            location
-        });
-
-        const twiml = twilioService.buildTwiMLReply(responseMessage);
-        
-        res.set('Content-Type', 'text/xml');
-        res.send(twiml);
-    } catch (error) {
-        logger.error(`Error in /whatsapp route: ${error.message}`, error);
-        const twiml = twilioService.buildTwiMLReply("Sorry, something went wrong. Please try again later.");
-        res.set('Content-Type', 'text/xml');
-        res.send(twiml);
+    if (mode && token) {
+        if (mode === 'subscribe' && token === config.metaWhatsapp.verifyToken) {
+            logger.info('WEBHOOK_VERIFIED');
+            res.status(200).send(challenge);
+        } else {
+            logger.warn('WEBHOOK_VERIFICATION_FAILED');
+            res.sendStatus(403);
+        }
+    } else {
+        res.sendStatus(400);
     }
 });
 
-// POST /sms
-router.post('/sms', async (req, res) => {
+// POST /whatsapp - Receive incoming messages
+router.post('/whatsapp', async (req, res) => {
     try {
-        const {
-            Body,
-            From,
-            To,
-            NumMedia,
-            Latitude,
-            Longitude
-        } = req.body;
+        const body = req.body;
 
-        const location = (Latitude && Longitude) ? { lat: Latitude, lon: Longitude } : null;
+        // Check if this is an event from a WhatsApp API
+        if (body.object) {
+            if (
+                body.entry &&
+                body.entry[0].changes &&
+                body.entry[0].changes[0] &&
+                body.entry[0].changes[0].value.messages &&
+                body.entry[0].changes[0].value.messages[0]
+            ) {
+                const messageObj = body.entry[0].changes[0].value.messages[0];
+                const contactObj = body.entry[0].changes[0].value.contacts?.[0];
+                
+                const from = messageObj.from; // Sender phone number
+                const profileName = contactObj?.profile?.name || '';
+                
+                // Extract text if it's a text message
+                const msgBody = messageObj.type === 'text' ? messageObj.text.body : '';
+                
+                // Location parsing (if they send location)
+                let location = null;
+                if (messageObj.type === 'location') {
+                    location = {
+                        lat: messageObj.location.latitude,
+                        lon: messageObj.location.longitude
+                    };
+                }
 
-        const responseMessage = await messageController.handleIncoming({
-            body: Body,
-            from: From,
-            channel: 'sms',
-            location
-        });
+                // Process the message via the controller
+                const responseMessage = await messageController.handleIncoming({
+                    body: msgBody,
+                    from: from,
+                    profileName: profileName,
+                    channel: 'whatsapp',
+                    location
+                });
 
-        const twiml = twilioService.buildTwiMLReply(responseMessage);
-        
-        res.set('Content-Type', 'text/xml');
-        res.send(twiml);
+                // Send the reply asynchronously (Meta doesn't expect the reply in the HTTP response)
+                if (responseMessage) {
+                    await whatsappService.sendMessage(from, responseMessage);
+                }
+            }
+            
+            // Meta expects a 200 OK to acknowledge receipt
+            res.sendStatus(200);
+        } else {
+            // Not a WhatsApp API event
+            res.sendStatus(404);
+        }
     } catch (error) {
-        logger.error(`Error in /sms route: ${error.message}`, error);
-        const twiml = twilioService.buildTwiMLReply("Sorry, something went wrong. Please try again later.");
-        res.set('Content-Type', 'text/xml');
-        res.send(twiml);
+        logger.error(`Error in /whatsapp POST route: ${error.message}`, error);
+        res.sendStatus(500);
     }
 });
 

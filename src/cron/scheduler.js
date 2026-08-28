@@ -1,7 +1,7 @@
 const cron = require('node-cron');
 const { runDistressCheck } = require('../services/distressScorer');
 const { getWeatherForecast } = require('../services/weatherService');
-const { sendMessage } = require('../services/twilioService');
+const { sendMessage } = require('../services/whatsappService');
 const { getMessage } = require('../services/languageService');
 const Farmer = require('../models/Farmer');
 const AgriOfficer = require('../models/AgriOfficer');

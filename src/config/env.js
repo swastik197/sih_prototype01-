@@ -3,11 +3,10 @@ require('dotenv').config();
 const config = {
   port: process.env.PORT || 3000,
   mongoDbUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/sih2026',
-  twilio: {
-    accountSid: process.env.TWILIO_ACCOUNT_SID || '',
-    authToken: process.env.TWILIO_AUTH_TOKEN || '',
-    whatsappNumber: process.env.TWILIO_WHATSAPP_NUMBER || 'whatsapp:+14155238886',
-    smsNumber: process.env.TWILIO_SMS_NUMBER || '',
+  metaWhatsapp: {
+    phoneNumberId: process.env.META_WA_PHONE_NUMBER_ID || '',
+    accessToken: process.env.META_WA_ACCESS_TOKEN || '',
+    verifyToken: process.env.META_WA_VERIFY_TOKEN || 'sih_2026_webhook_secret',
   },
   openWeatherApiKey: process.env.OPENWEATHER_API_KEY || '',
   distressThreshold: parseInt(process.env.DISTRESS_THRESHOLD, 10) || 70,
@@ -16,8 +15,8 @@ const config = {
 };
 
 // Warn about missing optional vars
-if (!config.twilio.accountSid) {
-  console.warn('⚠️  TWILIO_ACCOUNT_SID not set. Twilio messaging will be disabled.');
+if (!config.metaWhatsapp.accessToken || !config.metaWhatsapp.phoneNumberId) {
+  console.warn('⚠️  META_WA_ACCESS_TOKEN or META_WA_PHONE_NUMBER_ID not set. WhatsApp messaging will be disabled.');
 }
 if (!config.openWeatherApiKey) {
   console.warn('⚠️  OPENWEATHER_API_KEY not set. Using simulated weather data.');

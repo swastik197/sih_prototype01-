@@ -6,7 +6,7 @@ const Alert = require('../models/Alert');
 const Crop = require('../models/Crop');
 const AgriOfficer = require('../models/AgriOfficer');
 const logger = require('../utils/logger');
-const twilioService = require('../services/twilioService');
+const whatsappService = require('../services/whatsappService');
 const distressScorer = require('../services/distressScorer');
 const weatherService = require('../services/weatherService');
 const languageService = require('../services/languageService');
@@ -78,7 +78,7 @@ router.post('/trigger-distress-check', async (req, res) => {
                 alertsSent++;
                 const officer = await AgriOfficer.findOne({ district: farmer.district });
                 const alertMessage = languageService.getTemplate(farmer.language || 'hi', 'distress_alert', { score });
-                await twilioService.sendMessage(farmer.phone, alertMessage, farmer.preferredChannel || 'whatsapp');
+                await whatsappService.sendMessage(farmer.phone, alertMessage, farmer.preferredChannel || 'whatsapp');
                 
                 if (officer) {
                     const officerMessage = languageService.getTemplate('en', 'distress_alert_officer', { 
@@ -86,7 +86,7 @@ router.post('/trigger-distress-check', async (req, res) => {
                         phone: farmer.phone,
                         score
                     });
-                    await twilioService.sendMessage(officer.phone, officerMessage, 'sms');
+                    await whatsappService.sendMessage(officer.phone, officerMessage, 'sms');
                 }
 
                 await Alert.create({
@@ -119,7 +119,7 @@ router.post('/send-test-message', async (req, res) => {
         const { phone, message, channel } = req.body;
         if (!phone || !message) return res.status(400).json({ error: 'Phone and message are required' });
         
-        await twilioService.sendMessage(phone, message, channel || 'whatsapp');
+        await whatsappService.sendMessage(phone, message, channel || 'whatsapp');
         res.json({ success: true, message: 'Test message sent' });
     } catch (error) {
         res.status(500).json({ error: error.message });
