@@ -8,6 +8,7 @@ const config = {
     accessToken: process.env.META_WA_ACCESS_TOKEN || '',
     verifyToken: process.env.META_WA_VERIFY_TOKEN || 'sih_2026_webhook_secret',
   },
+  sarvamApiKey: process.env.SARVAM_API_KEY || '',
   openWeatherApiKey: process.env.OPENWEATHER_API_KEY || '',
   distressThreshold: parseInt(process.env.DISTRESS_THRESHOLD, 10) || 70,
   alertCronSchedule: process.env.ALERT_CRON_SCHEDULE || '0 */6 * * *',

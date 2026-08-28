@@ -6,10 +6,18 @@
 const normalizePhone = (phone) => {
   if (!phone) return '';
   let normalized = phone.replace('whatsapp:', '').trim();
-  if (!normalized.startsWith('+')) {
-    // Assuming Indian numbers if no + prefix
-    normalized = `+91${normalized}`;
+  
+  // Remove '+' if it exists temporarily for checking
+  let clean = normalized.replace('+', '');
+  
+  // If it's exactly 10 digits, it's an Indian number without a country code
+  if (clean.length === 10) {
+    normalized = `+91${clean}`;
+  } else if (!normalized.startsWith('+')) {
+    // If it came from Meta Webhook, it's typically "91XXXXXXXXXX" (no '+')
+    normalized = `+${normalized}`;
   }
+  
   return normalized;
 };
 

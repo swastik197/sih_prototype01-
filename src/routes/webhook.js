@@ -4,6 +4,8 @@ const messageController = require('../controllers/messageController');
 const whatsappService = require('../services/whatsappService');
 const config = require('../config/env');
 const logger = require('../utils/logger');
+const Farmer = require('../models/Farmer');
+const { normalizePhone } = require('../utils/helpers');
 
 // GET /whatsapp - Webhook verification required by Meta
 router.get('/whatsapp', (req, res) => {
@@ -67,7 +69,11 @@ router.post('/whatsapp', async (req, res) => {
 
                 // Send the reply asynchronously (Meta doesn't expect the reply in the HTTP response)
                 if (responseMessage) {
-                    await whatsappService.sendMessage(from, responseMessage);
+                    const phone = normalizePhone(from);
+                    const farmer = await Farmer.findOne({ phone });
+                    const lang = farmer?.language || 'hi';
+                    
+                    await whatsappService.sendTextAndVoice(from, responseMessage, lang);
                 }
             }
             
