@@ -30,14 +30,11 @@ async function generateAudio(text, langCode = 'hi') {
     const response = await axios.post(
       'https://api.sarvam.ai/text-to-speech',
       {
-        inputs: [safeText],
-        target_language_code: targetLang,
+        text: safeText,
+        language_code: targetLang,
         speaker: 'meera', // 'meera' or 'shubh'
-        pitch: 0,
         pace: 1.0,
-        loudness: 0,
         speech_sample_rate: 24000,
-        enable_preprocessing: true,
         model: 'bulbul:v3'
       },
       {
