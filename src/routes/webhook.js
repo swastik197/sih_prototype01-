@@ -73,7 +73,12 @@ router.post('/whatsapp', async (req, res) => {
                     const farmer = await Farmer.findOne({ phone });
                     const lang = farmer?.language || 'hi';
                     
-                    await whatsappService.sendTextAndVoice(from, responseMessage, lang);
+                    const textToSend = typeof responseMessage === 'string' ? responseMessage : responseMessage.text;
+                    const voiceToSend = typeof responseMessage === 'object' && responseMessage.voiceText 
+                                        ? responseMessage.voiceText 
+                                        : textToSend;
+                    
+                    await whatsappService.sendTextAndVoice(from, textToSend, lang, voiceToSend);
                 }
             }
             

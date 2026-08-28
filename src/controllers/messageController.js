@@ -46,7 +46,12 @@ exports.handleIncoming = async ({ body, from, profileName, channel, location }) 
       }
 
       case 'help': {
-        return getMessage('help_menu', lang);
+        const textMsg = getMessage('help_menu', lang);
+        // Fallback to text if audio-specific script isn't found
+        const voiceMsg = getMessage('help_menu_audio', lang) !== 'help_menu_audio' 
+                         ? getMessage('help_menu_audio', lang) 
+                         : textMsg;
+        return { text: textMsg, voiceText: voiceMsg };
       }
 
       case 'weather': {
@@ -97,7 +102,11 @@ exports.handleIncoming = async ({ body, from, profileName, channel, location }) 
       }
 
       default: {
-        return getMessage('help_menu', lang);
+        const textMsg = getMessage('help_menu', lang);
+        const voiceMsg = getMessage('help_menu_audio', lang) !== 'help_menu_audio' 
+                         ? getMessage('help_menu_audio', lang) 
+                         : textMsg;
+        return { text: textMsg, voiceText: voiceMsg };
       }
     }
   } catch (error) {

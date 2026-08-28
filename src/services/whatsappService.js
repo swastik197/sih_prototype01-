@@ -120,16 +120,18 @@ async function sendMessage(to, message) {
 /**
  * High-level wrapper that sends BOTH text and audio (via Sarvam AI TTS)
  * @param {string} to Phone number
- * @param {string} message Text message to send and vocalize
+ * @param {string} message Text message to send
  * @param {string} language Internal language code (e.g. 'hi')
+ * @param {string} voiceMessage Optional distinct text for the voice note
  */
-async function sendTextAndVoice(to, message, language = 'hi') {
+async function sendTextAndVoice(to, message, language = 'hi', voiceMessage = null) {
   // 1. Send the text message immediately
   await sendMessage(to, message);
 
   // 2. Generate and send audio in the background (or sequentially)
   try {
-    const audioBuffer = await ttsService.generateAudio(message, language);
+    const textToVocalize = voiceMessage || message;
+    const audioBuffer = await ttsService.generateAudio(textToVocalize, language);
     if (audioBuffer) {
       const mediaId = await uploadMedia(audioBuffer, 'audio/mpeg');
       if (mediaId) {
